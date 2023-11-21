@@ -102,7 +102,7 @@ export class Scheduler {
         this.logger.error(`deleted job '${job.type}:${job.id}': ${err.message}`)
     }
 
-    async handleException(job: Job | null, err: Error) {
+    handleException(job: Job | null, err: Error) {
         if (job) {
             this.logger.error(`failed to process job '${job.type}:${job.id}': ${err.message}`)
         } else {
