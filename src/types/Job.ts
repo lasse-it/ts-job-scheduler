@@ -6,6 +6,7 @@ export class Job {
     recurringMillisecondDelay = 0;
 
     constructor(public id: string, public type: string) {
+        this.executeAt = new Date();
     }
 
     WithExecutionAt(date: Date): Job {
