@@ -35,7 +35,7 @@ export class Scheduler {
 
     async Enqueue(job: Job) {
         await this.storage.Enqueue(job);
-        this.logger.info(`enqueued job ${job.id} of type ${job.type}`)
+        this.logger.info(`enqueued job ${job.id} of type ${job.type}, execute at ${job.executeAt.toISOString()}`)
     }
 
     async Start() {
@@ -81,8 +81,9 @@ export class Scheduler {
 
     private async handleSuccess(job: Job) {
         if (job.IsRecurring()) {
-            await this.storage.Enqueue(job.WithNextExecutionAt());
-            this.logger.info(`processed recurring job '${job.type}:${job.id}'`)
+            const nextJob = job.WithNextExecutionAt();
+            await this.storage.Enqueue(nextJob);
+            this.logger.info(`processed recurring job '${job.type}:${job.id}', next execution at ${nextJob.executeAt.toISOString()}`)
             return;
         }
 
